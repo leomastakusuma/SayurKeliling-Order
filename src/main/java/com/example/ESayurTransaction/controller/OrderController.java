@@ -1,9 +1,9 @@
 package com.example.ESayurTransaction.controller;
 
 import com.example.ESayurTransaction.model.Product;
-import com.example.ESayurTransaction.model.Transaksi;
+import com.example.ESayurTransaction.model.TransaksiList;
 import com.example.ESayurTransaction.repository.ProductRepository;
-import com.example.ESayurTransaction.repository.TransaksiRepository;
+import com.example.ESayurTransaction.repository.TransaksiListRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,43 +20,52 @@ import java.util.List;
 public class OrderController {
 
     @Autowired
-    TransaksiRepository transaksiRepository;
-
+    TransaksiListRepository transaksiListRepository;
+    
     @Autowired
     ProductRepository productRepository;
 
-    @ApiOperation("View List Order")
-    @GetMapping("/{idUser}")
-    public List<Transaksi> listOrder(@PathVariable("idUser") Long idUser) {
-        List<Transaksi> data = transaksiRepository.getByUser(idUser);
+    @ApiOperation("View List Order by Pembeli")
+    @GetMapping("/user/{idUser}")
+    public List<TransaksiList> listOrderPembeli(@PathVariable("idUser") Long idUser) {
+        List<TransaksiList> data = transaksiListRepository.getByUser(idUser);
         return data;
     }
 
+
+    @ApiOperation("View List Order by Grobak")
+    @GetMapping("/grobak/{idGrobak}")
+    public List<Object> listOrderGrobak(@PathVariable("idGrobak") Long idGrobak) {
+        return  transaksiListRepository.listPesananByGrobak(idGrobak);
+    }
+
+
     @ApiOperation("Create Order ")
     @PostMapping("/")
-    public Transaksi createOrder(@RequestBody Transaksi transaksi) {
-        Product productData = productRepository.getByIDs(transaksi.getIdProduct());
+    public TransaksiList createOrder(@RequestBody TransaksiList transaksiList) {
+
+        Product productData = productRepository.getByIDs(transaksiList.getIdProduct());
         if(productData ==null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }else{
-            transaksi.setPrice(productData.getPrice());
-            transaksi.setIdProduct(productData.getidProduct());
-            transaksi.setProductName(productData.getProductName());
-            transaksi.setIdGrobak(productData.getIdUser());
-            long total = Integer.valueOf(productData.getPrice()) * transaksi.getQty();
-            transaksi.setTotalPrice(String.valueOf(total));
-            return transaksiRepository.save(transaksi);
+            transaksiList.setPrice(productData.getPrice());
+            transaksiList.setIdProduct(productData.getidProduct());
+            transaksiList.setProductName(productData.getProductName());
+            transaksiList.setIdGrobak(productData.getIdUser());
+            long total = Integer.valueOf(productData.getPrice()) * transaksiList.getQty();
+            transaksiList.setTotalPrice(String.valueOf(total));
+            return transaksiListRepository.save(transaksiList);
         }
     }
 
     @ApiOperation("Delete Order")
     @DeleteMapping("/{idOrder}")
     public ResponseEntity<?> deleteNote(@PathVariable(value = "idOrder") Long idOrder) {
-        Transaksi transaksi = transaksiRepository.getById(idOrder);
-        if(transaksi ==null){
+        TransaksiList transaksiList = transaksiListRepository.getById(idOrder);
+        if(transaksiList ==null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }else{
-            transaksiRepository.deleteById(idOrder);
+            transaksiListRepository.deleteById(idOrder);
             return ResponseEntity.ok().build();
         }
     }

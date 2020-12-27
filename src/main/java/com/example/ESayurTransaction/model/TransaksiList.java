@@ -10,13 +10,13 @@ import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 @Entity
-@Table(name = "transaksi")
+@Table(name = "transaksi_list")
 @EntityListeners(AuditingEntityListener.class)
 @JsonIgnoreProperties(value = {"createdAt", "updatedAt"},allowGetters = true)
-public class Transaksi {
+public class TransaksiList {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idTransaksi;
+    private Long idTransaksiList;
 
     private Long idProduct;
 
@@ -101,12 +101,12 @@ public class Transaksi {
     @LastModifiedDate
     private Date updatedAt;
 
-    public Long getidTransaksi() {
-        return idTransaksi;
+    public Long getIdTransaksiList() {
+        return idTransaksiList;
     }
 
-    public void setIdTransaksi(Long idTransaksi) {
-        this.idTransaksi = idTransaksi;
+    public void setIdTransaksiList(Long idTransaksiList) {
+        this.idTransaksiList = idTransaksiList;
     }
 
 
