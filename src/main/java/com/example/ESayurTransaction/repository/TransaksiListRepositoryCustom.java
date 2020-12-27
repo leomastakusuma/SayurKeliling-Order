@@ -2,8 +2,10 @@ package com.example.ESayurTransaction.repository;
 
 import com.example.ESayurTransaction.model.TransaksiList;
 import java.util.List;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
 
 public interface TransaksiListRepositoryCustom {
 
@@ -19,6 +21,5 @@ public interface TransaksiListRepositoryCustom {
 
     @Query(value="select  distinct (t.id_user) id_user from transaksi_list t where t.id_grobak =:idGrobak ", nativeQuery=true)
     List<Object> listPesananByGrobak(Long idGrobak);
-
 
 }

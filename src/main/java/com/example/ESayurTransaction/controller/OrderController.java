@@ -60,12 +60,24 @@ public class OrderController {
 
     @ApiOperation("Delete Order")
     @DeleteMapping("/{idOrder}")
-    public ResponseEntity<?> deleteNote(@PathVariable(value = "idOrder") Long idOrder) {
+    public ResponseEntity<?> delete(@PathVariable(value = "idOrder") Long idOrder) {
         TransaksiList transaksiList = transaksiListRepository.getById(idOrder);
         if(transaksiList ==null){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }else{
             transaksiListRepository.deleteById(idOrder);
+            return ResponseEntity.ok().build();
+        }
+    }
+
+    @ApiOperation("Delete Order")
+    @DeleteMapping("/grobak/done/{idOrder}")
+    public ResponseEntity<?> deleteOrder(@PathVariable(value = "idOrder") Long idOrder) {
+        List<TransaksiList> transaksiList = transaksiListRepository.getByUser(idOrder);
+        if(transaksiList.isEmpty()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        }else {
+            transaksiListRepository.deleteByIdUser(idOrder);
             return ResponseEntity.ok().build();
         }
     }
