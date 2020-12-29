@@ -22,4 +22,15 @@ public interface TransaksiListRepositoryCustom {
     @Query(value="select  distinct (t.id_user) id_user from transaksi_list t where t.id_grobak =:idGrobak ", nativeQuery=true)
     List<Object> listPesananByGrobak(Long idGrobak);
 
+    @Query(value="SELECT tl.product_name,kt.kategori,tl.qty,pembeli.full_name as pembeli, grobak.full_name as grobak  from transaksi_list tl \n"
+        + "\tJOIN user pembeli ON pembeli.id_user = tl.id_user \n"
+        + "\tJOIN product p on p.id_product = tl.id_product\n"
+        + "\tJOIN kategori kt on kt.id_kategori = p.id_kategori\n"
+        + "\tJOIN user grobak ON grobak.id_user = tl.id_grobak\n"
+        + "WHERE (tl.product_name LIKE %:product%) OR (pembeli.full_name LIKE %:pembeli% )OR (kt.kategori LIKE %:kategori% )OR (grobak.full_name LIKE %:grobak%)\n"
+        + "\n"
+        + "and pembeli.level='pembeli'\n"
+        + "and grobak.level = 'grobak'", nativeQuery=true)
+    List<Object> searchTransaksi(String product,String pembeli,String grobak,String kategori);
+
 }

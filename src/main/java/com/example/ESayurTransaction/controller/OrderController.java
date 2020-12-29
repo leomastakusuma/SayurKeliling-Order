@@ -7,6 +7,9 @@ import com.example.ESayurTransaction.repository.ProductRepository;
 import com.example.ESayurTransaction.repository.TransaksiListRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import javax.management.Query;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +22,8 @@ import java.util.List;
 @Api(tags = "Order ")
 @RequestMapping("/api/order")
 public class OrderController {
-
+    @PersistenceContext
+    private EntityManager em;
     @Autowired
     TransaksiListRepository transaksiListRepository;
 
@@ -87,4 +91,13 @@ public class OrderController {
             return ResponseEntity.ok().build();
         }
     }
+
+    @ApiOperation("View List OrderForm by Pembeli")
+    @GetMapping("/search")
+    public List<Object> searching(@RequestParam(name="pembeli",required = false) String pembeli,@RequestParam(name = "grobak",required = false) String grobak,@RequestParam(name="product",required = false) String product,@RequestParam(name = "kategori",required = false) String kategori) {
+     return transaksiListRepository.searchTransaksi(product,pembeli,grobak,kategori);
+
+
+    }
+
 }
