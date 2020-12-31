@@ -1,5 +1,4 @@
 package com.example.ESayurTransaction.repository;
-
 import com.example.ESayurTransaction.model.TransaksiList;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

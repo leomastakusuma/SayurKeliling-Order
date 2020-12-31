@@ -1,13 +1,15 @@
 package com.example.ESayurTransaction.controller;
 
 import com.example.ESayurTransaction.Form.OrderForm;
+import com.example.ESayurTransaction.model.OrderList;
 import com.example.ESayurTransaction.model.Product;
+import com.example.ESayurTransaction.model.Search;
 import com.example.ESayurTransaction.model.TransaksiList;
 import com.example.ESayurTransaction.repository.ProductRepository;
 import com.example.ESayurTransaction.repository.TransaksiListRepository;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import javax.management.Query;
+import java.util.Collection;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +42,7 @@ public class OrderController {
 
     @ApiOperation("View List OrderForm by Grobak")
     @GetMapping("/grobak/{idGrobak}")
-    public List<Object> listOrderGrobak(@PathVariable("idGrobak") Long idGrobak) {
+    public List<OrderList> listOrderGrobak(@PathVariable("idGrobak") Long idGrobak) {
         return  transaksiListRepository.listPesananByGrobak(idGrobak);
     }
 
@@ -94,10 +96,11 @@ public class OrderController {
 
     @ApiOperation("View List OrderForm by Pembeli")
     @GetMapping("/search")
-    public List<Object> searching(@RequestParam(name="pembeli",required = false) String pembeli,@RequestParam(name = "grobak",required = false) String grobak,@RequestParam(name="product",required = false) String product,@RequestParam(name = "kategori",required = false) String kategori) {
-     return transaksiListRepository.searchTransaksi(product,pembeli,grobak,kategori);
-
-
+    public List<Search> searching(@RequestParam(name="pembeli",required = false) String pembeli,@RequestParam(name = "grobak",required = false) String grobak,@RequestParam(name="product",required = false) String product,@RequestParam(name = "kategori",required = false) String kategori) {
+        List<Search> searches =  transaksiListRepository.searchTransaksi(product, pembeli, grobak, kategori);
+        if(pembeli ==null    && grobak ==null && product ==null && kategori ==null){
+            return  transaksiListRepository.allTraksaksi();
+        }
+        return searches;
     }
-
 }

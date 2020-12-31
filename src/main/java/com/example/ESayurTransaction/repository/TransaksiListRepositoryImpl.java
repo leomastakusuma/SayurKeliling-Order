@@ -1,5 +1,7 @@
 package com.example.ESayurTransaction.repository;
 
+import com.example.ESayurTransaction.model.OrderList;
+import com.example.ESayurTransaction.model.Search;
 import com.example.ESayurTransaction.model.TransaksiList;
 import com.example.ESayurTransaction.model.User;
 import java.util.List;
@@ -16,9 +18,6 @@ import javax.persistence.criteria.Root;
 public class TransaksiListRepositoryImpl implements  TransaksiListRepositoryCustom{
 
 
-    @PersistenceContext
-    private EntityManager entityManager;
-
     @Override
     public List<TransaksiList> getByUser(Long idUser) {
         return null;
@@ -28,12 +27,17 @@ public class TransaksiListRepositoryImpl implements  TransaksiListRepositoryCust
         return null;
     }
     @Override
-    public List<Object> listPesananByGrobak(Long idGrobak) {
+    public List<OrderList> listPesananByGrobak(Long idGrobak) {
         return null;
     }
 
     @Override
-    public List<Object> searchTransaksi(String product, String pembeli, String grobak, String kategori) {
+    public List<Search> searchTransaksi(String product, String pembeli, String grobak, String kategori) {
+        return null;
+    }
+
+    @Override
+    public List<Search> allTraksaksi() {
         return null;
     }
 
